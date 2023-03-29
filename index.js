@@ -40,3 +40,64 @@ function getManager() {
         })
     })
 }
+
+function continuePrompt() {
+    inquirer.prompt(
+        {
+            type: 'list',
+            message: 'Please select am option.',
+            choices: ['Add engineer', 'Add intern', 'End team building'],
+            name: 'continuePrompt'
+        }
+    ).then((response) => {
+        if (response.continuePrompt === 'Add engineer') {
+            addEngineer();
+        }
+        if (response.continuePrompt === 'Add intern') {
+            addIntern();
+        }
+        if (response.continuePrompt === 'End team building') {
+            endTeamBuld();
+        }
+    })
+}
+
+function addEngineer() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: 'Enter the name',
+            name: 'name',
+        },
+        {
+            type: 'number',
+            message: 'Enter the employee id',
+            name: 'id',
+        },
+        {
+            message: 'Enter the email address',
+            name: 'email',
+        },
+        {
+            message: 'Enter the GitHub username',
+            name: 'github'
+        }
+    ]).then((response) => {
+        let engineer = new Engineer(response.name, response.id, response.email, response.github);
+        fs.appendFile('./dist/index.html',
+            `<div class="card">
+            <div class="title">
+                <h2>${engineer.name}</h2>
+                <h3>Engineer</h3>
+            </div>
+            <div class="details">
+                <p><strong>ID: </strong><span>${engineer.id}</span></p>
+                <p><strong>Email: </strong><a href="mailto:${engineer.email}"><span>${engineer.email}</span></p></a>
+                <p><strong>GitHub: </strong><a href="https://github.com/${engineer.github}" target="_blank"><span>${engineer.github}</span></a></p>
+            </div>
+        </div>`, err => {
+                    err ? console.error(err) :
+                    continuePrompt();
+        });
+    });
+}
