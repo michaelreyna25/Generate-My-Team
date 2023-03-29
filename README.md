@@ -26,7 +26,7 @@ Generate-My-Team is an application that generates a team environment with the fo
     - Intern Email Address
     - Intern School
 
-[Click here for Deployed Site]()
+[Click here for Video](./src/Generate-Team.mp4)
 
 
 
