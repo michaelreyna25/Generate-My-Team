@@ -5,10 +5,26 @@ const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
 
 function getManager() {
-    inquirer.createPromptModule([
+    inquirer.prompt([
         {
+            message: 'Enter the name',
+            name: 'name',
 
         },
+        {
+            type: 'number',
+            message: 'Enter the employee id',
+            name: 'id',
+        },
+        {
+            message: 'Enter the email address',
+            name: 'email',
+        },
+        {
+            type: 'number',
+            message: 'Enter the office number',
+            name: 'officeNumber'
+        }
     ]).then((response) => {
         let manager = new Manager(response.name, response.id, response.email, response.officeNumber)
         fs.writeFile('./dist/index.html',
@@ -101,3 +117,55 @@ function addEngineer() {
         });
     });
 }
+
+function addIntern() {
+    inquirer.prompt([
+        {
+            message: 'Enter the name',
+            name: 'name',
+        },
+        {
+            type: 'number',
+            message: 'Enter the employee id',
+            name: 'id',
+        },
+        {
+            message: 'Enter the email address',
+            name: 'email',
+        },
+        {
+            message: 'Enter the school',
+            name: 'school'
+        }
+    ])
+        .then((response) => {
+            let intern = new Intern(response.name, response.id, response.email, response.school);
+            fs.appendFile('./dist/index.html', 
+    `<div class="card">
+        <div class="title">
+            <h2>${intern.name}</h2>
+            <h3>Intern</h3>
+        </div>
+        <div class="details">
+            <p><strong>ID: </strong><span>${intern.id}</span></p>
+            <p><strong>Email: </strong><a href="mailto:${intern.email}"><span>${intern.email}</span></p></a>
+            <p><strong>School: </strong><span>${intern.school}</span></p>
+        </div>
+    </div>`, err => {
+                err ? console.log(err)
+                    : continuePrompt();
+            });
+        })
+}
+
+function endTeamBuld() {
+    fs.appendFile('./dist/index.html', `
+</div>
+</body>
+</html>`, err => {
+        err ? console.log(err)
+            : console.log('HTML file generated!')
+    });
+}
+
+getManager();
